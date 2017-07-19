@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Home from "../screens/Home";
 import Register from "../screens/Registers";
 import Login from "../screens/Login";
+import ConfirmDelete from '../screens/ConfirmDelete';
+import EditFrom from '../screens/EditFrom';
 import { StackNavigator , TabNavigator } from "react-navigation";
 import Screen1 from '../screens/Screen1';
 import Screen2 from '../screens/Screen2';
@@ -18,6 +20,31 @@ export const RegisterStack = StackNavigator({
   },
 });
 
+export const EditStack = StackNavigator({
+    Home : {
+      screen: Home,
+      navigationOptions: () => ({
+      headerTitle: "Home"
+    })
+  },
+  EditFrom : {
+      screen: EditFrom,
+  }
+});
+
+export const DeleteStack = StackNavigator({
+    Home : {
+      screen: Home,
+      navigationOptions: () => ({
+      headerTitle: "Home"
+    })
+  },
+  ConfirmDelete : {
+      screen: ConfirmDelete,
+  }
+   
+});  
+
 export const AddStack = StackNavigator({
    Home : {
       screen: Home,
@@ -30,7 +57,7 @@ export const AddStack = StackNavigator({
      navigationOptions: () => ({
       headerTitle: "Create"
     })
-  }
+  },
 });
 
 export const LoginStack = StackNavigator({
@@ -74,6 +101,8 @@ export const Root = StackNavigator({
     // Tab :{screen : Tabs,},
     Home: {screen: LoginStack},
     Add: {screen: AddStack},
+    Delete: {screen : DeleteStack},
+    Edit :{screen : EditStack},
   },
   {
     headerMode: "none",

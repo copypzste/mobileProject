@@ -1,122 +1,8 @@
-import React, { PropTypes } from "react";
-import { View, Text, TouchableOpacity, StyleSheet , TextInput, AsyncStorage} from "react-native";
-import Home from './Home';
+ import React, {PropTypes,Component} from 'react';
+ import { View, TextInput,TouchableOpacity,Text ,StyleSheet } from 'react-native';
 
-class Registers extends React.Component {
-  static propsType = {
-    navigation: PropTypes.object,
-    jsonData:PropTypes.object,
-  };
-  constructor() {
-    super();
-    this.state = {
-      username:"",
-      firstName: "",
-      lastName: "",
-      emailUser: "",
-      phoneNumber: "",
-      session: "",
-      dataJSON: [],
-      assignID:"19x1",
-    };
-  }
-
-  componentDidMount() {
-    this._loadInitialState().done();
-  }
-
-  _loadInitialState = async () => {
-    let valueName = await AsyncStorage.getItem('username');
-    let valueSession = await AsyncStorage.getItem('session');
-    if (valueName !== null) {
-      this.setState({ username: valueName });
-      this.setState({ session: valueSession });
-    }
-    console.log(this.state.username + "$$$");
-    console.log(this.state.session + "$$$");
-    // Start Fetch Data Here.
-    this._loadDataFromAPI();
-  };
-
-  _loadDataFromAPI = () => {
-    console.log("Load Finish!!! At "+ this.state.session);
-    // return fetch(
-    //   "http://192.168.1.127/vtigercrm/webservice.php?operation=query&query=select+*+from+Contacts;&sessionName=" +
-    //     this.state.session
-    // )
-    //   .then(response => response.json())
-    //   .then(responseJson => {
-    //     this.setState({dataJSON : responseJson.result});
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   });
-  };
-
-  onConfirmPress = () => {
-    const { username,firstName, lastName, emailUser,phoneNumber, session,dataJSON ,assignID} = this.state;
-
-    console.log("From onConfirmPress");
-    console.log(
-       firstName +
-        " @@@@ " +
-        lastName +
-        " @@@@ " +
-           emailUser +
-        " @@@@ " +
-      phoneNumber+
-        " @@@@ " +
-        session
-    );
-    // Start Create
-    // let formElement = new FormData();
-    // for(var k in paramsElement){
-    //      formElement.append(k,paramsElement[k]);
-    //  }
-    let paramsBody = {
-        operation : 'create',
-        sessionName : session,
-        element : JSON.stringify({
-        firstname : firstName,
-        lastname : lastName,
-        email: emailUser,
-        mobile: phoneNumber,
-        assigned_user_id : assignID,
-        }),
-        elementType : 'Contacts',
-     }
-    let formBody = new FormData();
-    for(var k in paramsBody){
-         formBody.append(k,paramsBody[k]);
-     }
-    console.log(formBody);
-
-    fetch('http://192.168.1.107/vtigercrm/webservice.php', {
-       method: 'POST',
-       body: formBody,
-     })
-       .then(response => response.json())
-       .then(responseJson => {
-        console.log(responseJson);
-         if(responseJson.success && firstName !== null){
-         alert("Create Success!!!");
-         this.props.navigation.navigate('Home');
-        }else{
-            alert("Error Can't Create");
-        }
-       })
-       .catch(error => {
-         console.error(error);
-       }); 
-    // this.props.navigation.navigate('Home');
-  };
-
-  onCancelPress = () => {
-    console.log("From onCancelPress");
-    this.props.navigation.goBack(null);
-  };
-
-  render() {
+ class EditFrom extends Component{
+ render() {
     return (
         <View style={styles.container}>
           <View style={styles.contentInput}>
@@ -237,4 +123,4 @@ const styles = StyleSheet.create({
     backgroundColor: "#FEFEFE"
   }
 });
-export default Registers;
+export default EditFrom;

@@ -10,7 +10,7 @@ import { StackNavigator } from 'react-navigation';
 import Register from './screens/Registers';
 import Home from './screens/Home';
 import Login from './screens/Login';
-import {Root , Tabs} from './config/routes';
+import {Root} from './config/routes';
 
 class Index extends Component {
 
