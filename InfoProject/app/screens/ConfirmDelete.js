@@ -2,90 +2,93 @@ import React,{PropTypes, Component} from 'react';
 import { View , Text , StyleSheet ,TouchableOpacity ,AsyncStorage} from 'react-native';
 import Home from './Home';
 
-class ConfirmDelete extends Component{
-    static propsType = {
+class ConfirmDelete extends Component {
+  static propsType = {
     navigation: PropTypes.object
   };
 
-    constructor(){
-        super();
-        this.state={
-            id :"",
-            session:"",
-        }
+  constructor() {
+    super();
+    this.state = {
+      id: "",
+      session: "",
     };
+  }
 
-    componentDidMount() {
+  componentDidMount() {
     this._loadInitialState().done();
-    };
+  }
 
-    _loadInitialState = async () => {
-    let valueID = await AsyncStorage.getItem('userid');
-    let valueSession = await AsyncStorage.getItem('session');
-    if(valueID !== null){
-        this.setState({id : valueID});
-        this.setState({session: valueSession});
+  _loadInitialState = async () => {
+    let valueID = await AsyncStorage.getItem("userid");
+    let valueSession = await AsyncStorage.getItem("session");
+    if (valueID !== null) {
+      this.setState({ id: valueID });
+      this.setState({ session: valueSession });
     }
-    };
+  };
 
-    onCancelPress = ()=> {
-        this.props.navigation.goBack(null);
-    };
+  onCancelPress = () => {
+    this.props.navigation.goBack(null);
+  };
 
-    onConfirmDeletePress = ()=>{
+  onConfirmDeletePress = () => {
     console.log("From Confirm Delete");
-        let params ={
-         operation:'delete',
-         sessionName: this.state.session,
-         id: this.state.id,
-     }
-     let formData = new FormData();
-     for(var k in params){
-         formData.append(k,params[k]);
-         console.log(k+" : "+params[k]);
-     }
-      fetch('http://192.168.1.107/vtigercrm/webservice.php', {
-       method: 'POST',
-       body: formData,
-     })
-       .then(response => response.json())
-       .then(responseJson => {
-        console.log(responseJson);
-         if(responseJson.success){
-         this.props.navigation.navigate('Home');
-         alert("Delete Success");
-        }else{
-            alert("Delete Fail Pleas Try Again");
-        }
-       })
-       .catch(error => {
-         console.error(error);
-       });  
+    console.log(this.state.id);
+    let params = {
+      operation: "delete",
+      sessionName: this.state.session,
+      id: this.state.id
     };
-    render(){
-        return(
-            <View style ={{ flexDirection:'column',
-            justifyContent:'center',
-            alignItems:'center',
-            flex:1}}>
-                <Text style={{fontSize:30}}>You Sure To Delete This ?</Text>
-                <View style={{flexDirection:'row',}}>
-                    <TouchableOpacity 
-                    onPress = {this.onConfirmDeletePress}
-                    style={styles.button}>
-                        <Text style={styles.buttonText}>CONFIRM</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity 
-                    onPress = {this.onCancelPress}
-                    style={styles.button}>
-                        <Text style={styles.buttonText}>CANCEL</Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-        );
+    let formData = new FormData();
+    for (var k in params) {
+      formData.append(k, params[k]);
+      console.log(k + " : " + params[k]);
     }
+    fetch("http://192.168.1.107/vtigercrm/webservice.php", {
+      method: "POST",
+      body: formData
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson);
+        if (responseJson.success) {
+          this.props.navigation.navigate("Home");
+          alert("Delete Success");
+        } else {
+          alert("Delete Fail Pleas Try Again");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  render() {
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          flex: 1
+        }}
+      >
+        <Text style={{ fontSize: 30 }}>You Sure To Delete This ?</Text>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            onPress={this.onConfirmDeletePress}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>CONFIRM</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.onCancelPress} style={styles.button}>
+            <Text style={styles.buttonText}>CANCEL</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const INPUT_HEIGHT = 48;

@@ -27,6 +27,7 @@ class Home extends React.Component {
       session: "",
       dataJSON: [],
       userID:"",
+      userIDEdit:"",
       firstName:"",
       lastName:"",
       email:"",
@@ -63,8 +64,7 @@ class Home extends React.Component {
   _loadDataFromAPI = () => {
     console.log("From LoadData" + this.state.session);
     return fetch(
-      "http://192.168.1.107/vtigercrm/webservice.php?operation=query&query=select+*+from+Contacts;&sessionName=" +
-        this.state.session
+      "http://192.168.1.107/vtigercrm/webservice.php?operation=query&query=select+*+from+Contacts;&sessionName="+this.state.session
     )
       .then(response => response.json())
       .then(responseJson => {
@@ -83,15 +83,22 @@ class Home extends React.Component {
     
   };
 
-  handleEditPress(id,fname,lname,mail,phone){
-   let { userID, firstName, lastName, email, mobile } = this.state;
-   userID = id;
+  handleEditPress(idEdit,fname,lname,mail,phone){
+   let { userIDEdit, firstName, lastName, email, mobile } = this.state;
+   userIDEdit = idEdit;
    firstName = fname;
    lastName = lname;
    email = mail;
    mobile = phone;
-   console.log(id+" ### "+fname+" ### "+lname+" ### "+mail+" ### "+phone);
-   console.log(userID+" ### "+firstName+" ### "+lastName+" ### "+email+" ### "+mobile);
+   console.log(idEdit+" ### "+fname+" ### "+lname+" ### "+mail+" ### "+phone);
+   console.log(userIDEdit+" ### "+firstName+" ### "+lastName+" ### "+email+" ### "+mobile);
+   AsyncStorage.setItem('useridEdit',userIDEdit);
+   AsyncStorage.setItem('firstnameEdit',firstName);
+   AsyncStorage.setItem('lastnameEdit',lastName);
+   AsyncStorage.setItem('emailEdit',email);
+   AsyncStorage.setItem('mobileEdit',mobile);
+
+
    this.props.navigation.navigate('EditFrom');
   };
 

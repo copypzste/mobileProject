@@ -50,7 +50,7 @@ class BodyHome extends Component {
           source={require('../images/delete.png')}/>
         </TouchableOpacity>
         <TouchableOpacity 
-          onPress={()=> onEditPress(homeData.firstname,homeData.lastname,homeData.email,homeData.mobile)}
+          onPress={()=> onEditPress(homeData.id,homeData.firstname,homeData.lastname,homeData.email,homeData.mobile)}
           style={styles.button}>
           <Image
           style={{width:30}}
